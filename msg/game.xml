@@ -1,0 +1,85 @@
+<module name="msg">
+	<module name="gs">
+		<module name="auth">
+			<msg name="CAuth">
+				<field name="account" type="string"/>
+			</msg>
+			<msg name="SAuth">
+				<field name="account" type="string"/>
+				<field name="userid" type="long"/>
+			</msg>
+		</module>
+		
+		<module name="common">
+			<msg name="SError">
+				<field name="err" type="int"/>
+			</msg>
+			<msg name="SError2">
+				<field name="err" type="int"/>
+				<field name="param" type="int"/>
+			</msg>
+			<msg name="SError3">
+				<field name="err" type="string"/>
+			</msg>
+		</module>
+
+		<module name="login">
+			<msg name="CGetRoleList">
+			</msg>
+			
+			<bean name="RoleInfo">
+				<field name="roleid" type="long"/>
+				<field name="name" type="string"/>
+				<field name="gender" type="int"/>
+				<field name="profession" type="int"/>
+			</bean>
+			
+			<msg name="SGetRoleList">
+				<field name="userid" type="long"/>
+				<field name="roles" type="list:RoleInfo"/>
+			</msg>
+			<msg name="CCreateRole">
+				<field name="name" type="string"/>
+				<field name="gender" type="int"/>
+				<field name="profession" type="int"/>
+			</msg>
+			<msg name="SCreateRole">
+				<field name="roleinfo" type="RoleInfo"/>
+			</msg>
+			
+			<msg name="CRoleLogin">
+				<field name="roleid" type="long"/>
+			</msg>
+			<msg name="SRoleLogin">
+				<field name="roleid" type="long"/>
+			</msg>
+		</module>
+		
+		<module name="mall">
+			<bean name="Item">
+				<field name="id" type="int"/>
+				<bean name="Equip" id="1">
+					<field name="name" type="string"/>
+				</bean>
+				<bean name="Title" id="2">
+					<field name="num" type="int"/>
+				</bean>
+			</bean>
+		
+			<msg name="CBuy">
+				<field name="id" type="int"/>
+			</msg>
+			<msg name="SBuy">
+				<field name="id" type="int"/>
+				<field name="item" type="Item"/>
+			</msg>
+			
+			<msg name="CSell">
+				<field name="id" type="string"/>
+			</msg>
+			<msg name="SSell">
+				<field name="id" type="string"/>
+			</msg>			
+		</module>
+	</module>
+</module>

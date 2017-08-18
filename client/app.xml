@@ -1,0 +1,13 @@
+<conf>
+	<Base>
+		<connectServerid>13</connectServerid>
+		<account>lxya</account>
+	</Base>
+	<GateClient>
+		<ip>127.0.0.1</ip>
+		<port>1218</port>
+		<noDelay>true</noDelay>
+		<maxMsgSize>130000</maxMsgSize>
+	</GateClient>
+
+</conf>

@@ -1,0 +1,5 @@
+<module name="cfg">
+	<group name="server:client"/>
+	<include name="role/role.xml"/>
+
+</module>

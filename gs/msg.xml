@@ -1,0 +1,20 @@
+<module name="msg.gs">
+	<include name="../msg/net.xml"/>
+	<include name="../msg/game.xml"/>
+
+	<ref name="gs_client">
+		<module name="msg.gs"/>
+		<ref name="gs_client_not_role"/>
+	</ref>
+	<ref name="gs_client_not_auth">
+		<module name="msg.gs.auth"/>
+	</ref>
+	<ref name="gs_client_not_role">
+		<ref name="gs_client_not_auth"/>
+		<module name="msg.gs.login"/>
+	</ref>
+	<ref name="gs">
+		<ref name="gate_server"/>
+		<ref name="gs_client"/>
+	</ref>
+</module>

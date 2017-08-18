@@ -1,0 +1,21 @@
+<conf>
+	<Base>
+		<serverid>12</serverid>
+	</Base>
+
+	<ClientServer>
+		<ip>0.0.0.0</ip>
+		<port>1218</port>
+		<noDelay>true</noDelay>
+		<maxMsgSize>130000</maxMsgSize>
+	</ClientServer>
+	
+	
+	<GsServer>
+		<ip>0.0.0.0</ip>
+		<port>1219</port>
+		<noDelay>true</noDelay>
+		<maxMsgSize>130000</maxMsgSize>
+	</GsServer>
+
+</conf>

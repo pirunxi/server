@@ -1,0 +1,40 @@
+<module name="cfg.role">
+	
+	<enum name="EProfession">
+		<const name="QINGYUNMEN" value="1"/>
+		<const name="TIANYIN" value="2"/>
+	</enum>
+	<table name="Profession" input="profession.xlsx" group="all" line="true">
+		<field group="all" name="id" type="EProfession"/>
+		<field group="all" name="name" type="string"/>
+		<field group="all" name="t1" type="bool"/>
+		<field group="all" name="t2" type="int"/>
+		<field group="all" name="t3" type="long"/>
+		<field group="all" name="t4" type="float"/>
+		<field group="all" name="t5" type="double"/>
+		<field group="all" name="t6" type="list:int"/>
+		<field group="all" name="t7" type="set:int"/>
+		<field group="all" name="t8" type="map:int:int"/>
+		<field group="all" name="t9" type="Login"/>
+	</table>
+	
+	<table name="Login" input="login.xlsx" mode="list" group="all">
+		<field name="name" type="string" group="all"/>
+		<field name="desc" type="string" group="client"/>
+		<field name="title" type="int" group="server"/>
+		<bean name="Player">
+			<field group="all" name="pro" type="int"/>
+		</bean>
+		<bean name="Monster">
+			<field group="all" name="key" type="long"/>
+			<field group="all" name="xx" type="string"/>
+		</bean>
+	</table>
+	
+	<table name="Role" input="role.xlsx" mode="one" group="all">
+		<field name="name" type="string" group="all"/>
+		<field name="desc" type="string" group="client"/>
+		<field name="title" type="int" group="server"/>
+	</table>
+	
+</module>

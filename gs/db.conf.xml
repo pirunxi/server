@@ -1,0 +1,27 @@
+<xdb
+
+	localid = "1"
+	dbhome="_dbhome_"
+	logpages="4096"
+	corePoolSize="4"
+	procePoolSize="10"
+	schedPoolSize="2"
+	backupDir="_dbbackup_"
+	backupFullPeriod = "10000"
+	backupIncPeriod="3600"
+	backupDelay="60"
+	allowBackup="true"
+	
+	checkpointPeriod="5"
+	shrinkPeriod="60"
+	shrinkRecordExpireTime="3000"
+	defaultCachePageHigh="1000"
+	defaultCachePageLow="500"
+	defaultCacheRecordNum="10000"
+	
+	
+>
+
+
+
+</xdb>

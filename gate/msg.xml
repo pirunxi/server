@@ -1,0 +1,9 @@
+<module name="msg.gate">
+<include name="../msg/net.xml"/>
+
+<ref name="gate">
+	<ref name="gate_client"/>
+	<ref name="gate_server"/>
+</ref>
+
+</module>

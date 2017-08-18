@@ -1,0 +1,37 @@
+<module name="msg">
+	<module name="client2gate">
+		<msg name="CBindServer" id="1">
+			<field name="serverid" type="int"/>
+		</msg>
+		<msg name="SBindServer" id="2">
+			<field name="serverid" type="int"/>
+		</msg>
+	</module>
+	<module name="server2gate">
+		<msg name="Gate2XDelSession" id="4">
+			<field name="sid" type="int"/>
+		</msg>
+		
+		<msg name="Gate2XForwardFromClientSession" id="5">
+			<field name="sid" type="int"/>
+			<field name="msg" type="binary"/>
+		</msg>
+		<msg name="X2GateForwardToClientSession" id="6">
+			<field name="sid" type="int"/>
+			<field name="msg" type="binary"/>
+		</msg>
+		
+		<msg name="X2XAnnounceServer" id="7">
+			<field name="type" type="string"/>
+			<field name="serverid" type="int"/>
+			<field name="args" type="map:string:string"/>
+		</msg>
+	</module>
+	
+	<ref name="gate_client">
+		<module name="msg.client2gate"/>
+	</ref>
+	<ref name="gate_server">
+		<module name="msg.server2gate"/>
+	</ref>
+</module>

@@ -1,0 +1,14 @@
+<conf>
+	<Base>
+		<serverid>13</serverid>
+	</Base>
+	
+	
+	<GateClient>
+		<ip>127.0.0.1</ip>
+		<port>1219</port>
+		<noDelay>true</noDelay>
+		<maxMsgSize>130000</maxMsgSize>
+	</GateClient>
+
+</conf>
