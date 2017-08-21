@@ -9,17 +9,17 @@ import perfect.io.Message;
  * Created by HuangQiang on 2017/6/2.
  */
 public final class ClientSession {
-    public final int sid;
+    private final int sid;
     private gate.Session gateSession;
     private volatile long userid;
     private volatile long roleid;
 
-    public ClientSession(int sid, gate.Session gateSession) {
+    ClientSession(int sid, gate.Session gateSession) {
         this.sid = sid;
         this.gateSession = gateSession;
     }
 
-    public int getSid() {
+    int getSid() {
         return sid;
     }
 

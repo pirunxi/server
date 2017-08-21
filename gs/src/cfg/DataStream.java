@@ -11,7 +11,7 @@ public final class DataStream {
 	private final List<String> lines;
 	private int index;
 	
-	public DataStream(List<String> data) {
+	private DataStream(List<String> data) {
 		lines = data;
 		index = 0;
 	}

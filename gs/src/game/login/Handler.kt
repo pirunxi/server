@@ -20,7 +20,7 @@ object Handler : IHandler {
     class PCGetRoleList(m: CGetRoleList) : UProcedure<CGetRoleList>(m) {
         override fun process(): Boolean {
             val re = SGetRoleList()
-            val user = db.login.Users.get(userid);
+            val user = db.login.Users.get(userid)
             for (roleid in user.roleids) {
                 val role = db.login.Roles.get(roleid)
                 val ri = RoleInfo()

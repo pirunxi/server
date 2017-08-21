@@ -25,7 +25,7 @@ public class GateClient extends perfect.io.Client<Session> {
         return ins;
     }
 
-    public static void start(Conf conf) {
+    static void start(Conf conf) {
         if(ins != null) throw new RuntimeException("GateClient has started");
         ins = new GateClient(conf);
         ins.open();
@@ -99,7 +99,7 @@ public class GateClient extends perfect.io.Client<Session> {
         }
     }
 
-    protected void dispatch(Message m, ClientSession session) {
+    private void dispatch(Message m, ClientSession session) {
         int mid = m.getTypeId();
         if(session.getUserid() == 0 && !_Refs_.gs_client_not_auth.containsKey(mid)) {
             log.debug("session sid:{} not auth. can't send msg:{}", session.getSid(), m);

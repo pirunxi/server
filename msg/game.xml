@@ -71,7 +71,6 @@
 			</msg>
 			<msg name="SBuy">
 				<field name="id" type="int"/>
-				<field name="item" type="Item"/>
 			</msg>
 			
 			<msg name="CSell">

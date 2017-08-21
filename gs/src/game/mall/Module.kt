@@ -13,7 +13,7 @@ object Module : IModule {
     }
 
     override fun getHandler(): IHandler {
-        return Handler;
+        return Handler
     }
 
     private fun onEvent(evt : game.event.Login) {

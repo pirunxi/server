@@ -22,14 +22,17 @@ import java.util.Set;
 public class Modules {
     private final static Logger log = Trace.log;
     private final static List<IModule> modules = Arrays.asList(
-            game.auth.Module.INSTANCE
-            , Module.INSTANCE
-            , game.mall.Module.INSTANCE
+            // 必须最前
+            database.Module.Ins,
+
+
+            game.auth.Module.INSTANCE,
+            Module.INSTANCE,
+            game.mall.Module.INSTANCE,
 
 
             //  这几个必须放最后
-            ,database.Module.Ins
-            ,gate.Module.Ins
+            gate.Module.Ins
     );
 
     public static List<IModule> getModules() {
@@ -43,7 +46,7 @@ public class Modules {
             Class<?>[] paramTypes = method.getParameterTypes();
             if(method.isAnnotationPresent(RoleProcessor.class)) {
                 if(method.getReturnType() != boolean.class || paramTypes.length != 1 || !Message.class.isAssignableFrom(paramTypes[0])) {
-                    log.error("handler:{} method:{} is annotated as RoleHandler, signture must be  (long, T extends Message) -> boolean"
+                    log.error("handler:{} method:{} is annotated as RoleHandler, signture must be  (T extends Message) -> boolean"
                             ,name, method);
                     throw new RuntimeException("handler:" + handler + " method: " + method + " is annotated as RoleHandler, signture must be (T extends Message) -> boolean");
                 }

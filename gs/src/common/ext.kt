@@ -22,7 +22,7 @@ fun Message.responseDirecly(reply: Message) {
 fun Message.getRoleid() : Long = this.session.roleid
 
 fun Message.err(err : Int) : Boolean {
-    val session = this.context as ClientSession;
+    val session = this.context as ClientSession
     session.send(SError(err))
     return false
 }

@@ -21,7 +21,7 @@ object EventMgr {
 
     fun<T : AbstractEvent> remove(clazz : Class<T>, obj : Any) {
         synchronized(this) {
-            val listeners = listenersByType.get(clazz)
+            val listeners = listenersByType[clazz]
             if(listeners == null || listeners.none { it.obj == obj}) {
                 throw RuntimeException("listener class:$clazz not exist obj:$obj")
             }
@@ -31,7 +31,7 @@ object EventMgr {
 
     @Suppress("UNCHECKED_CAST")
     fun<T : AbstractEvent> trigger(arg : T) {
-        val listeners = listenersByType.get(arg.javaClass)
+        val listeners = listenersByType[arg.javaClass]
         if(listeners != null) {
             for(listener in listeners) {
                 (listener.listener as ((T) -> Unit))(arg)
@@ -39,5 +39,5 @@ object EventMgr {
         }
     }
 
-    private val listenersByType = ConcurrentHashMap<Class<*>, List<ListenerInfo<out AbstractEvent>>>();
+    private val listenersByType = ConcurrentHashMap<Class<*>, List<ListenerInfo<out AbstractEvent>>>()
 }

@@ -20,10 +20,10 @@ object Handler : IHandler {
        override fun process(): Boolean {
 
            if(m.account.isEmpty()) {
-               log.debug("CAuth. account is empty");
-               return false;
+               log.debug("CAuth. account is empty")
+               return false
            }
-           var account = db.auth.Accounts.get(m.account);
+           var account = db.auth.Accounts.get(m.account)
            val userid : Long
            if(account == null) {
                account = db.auth.Account.newBean()
@@ -41,8 +41,8 @@ object Handler : IHandler {
                userid = account.userid
            }
            Transaction.syncExecuteWhileCommit({
-               GateClient.getIns().auth(m.session, m.account, userid);
-           });
+               GateClient.getIns().auth(m.session, m.account, userid)
+           })
            return true
        }
    }
