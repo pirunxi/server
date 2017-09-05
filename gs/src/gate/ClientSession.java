@@ -11,7 +11,7 @@ import perfect.io.Message;
 public final class ClientSession {
     private final int sid;
     private gate.Session gateSession;
-    private volatile long userid;
+    private volatile String account;
     private volatile long roleid;
 
     ClientSession(int sid, gate.Session gateSession) {
@@ -27,8 +27,12 @@ public final class ClientSession {
         return gateSession;
     }
 
-    public long getUserid() {
-        return userid;
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public long getRoleid() {
@@ -39,16 +43,12 @@ public final class ClientSession {
         this.gateSession = gateSession;
     }
 
-    public void setUserid(long userid) {
-        this.userid = userid;
-    }
-
     public void setRoleid(long roleid) {
         this.roleid = roleid;
     }
 
     public boolean send(Message msg) {
-        Trace.log.debug("ClientSession.send sid:{} userid:{} roleid:{} msg:{}", sid, userid, roleid, msg);
+        Trace.log.debug("ClientSession.send sid:{} account:{} roleid:{} msg:{}", sid, account, roleid, msg);
         X2GateForwardToClientSession forward = new X2GateForwardToClientSession(sid, msg.encodeToBytes());
 
         if(gateSession == null || !gateSession.send(forward)) {

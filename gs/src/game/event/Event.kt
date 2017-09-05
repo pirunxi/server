@@ -5,8 +5,9 @@ package game.event
  */
 abstract class AbstractEvent {
     fun trigger() {
-        EventMgr.trigger(this)
+        EvtMgr.trigger(this)
     }
 }
 
 class Login(val roleid : Long) : AbstractEvent()
+class Logout(val roleid : Long) : AbstractEvent()

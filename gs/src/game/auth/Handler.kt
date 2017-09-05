@@ -1,5 +1,6 @@
 package game.auth
 
+import annotations.Handler
 import common.IHandler
 import common.session
 import gate.GateClient
@@ -11,6 +12,7 @@ import perfect.txn.Transaction
 /**
  * Created by HuangQiang on 2017/6/5.
  */
+@Handler
 object Handler : IHandler {
     override fun bind() {
         CAuth.handler = CAuth.Handler { PCAuth(it).execute() }
@@ -24,24 +26,15 @@ object Handler : IHandler {
                return false
            }
            var account = db.auth.Accounts.get(m.account)
-           val userid : Long
            if(account == null) {
                account = db.auth.Account.newBean()
                val now = System.currentTimeMillis()
-               userid = Database.getIns().nextid(db.auth.Accounts.getTable())
-               account.userid = userid
                account.createtime = now
                db.auth.Accounts.insert(m.account, account)
-
-               val user =  db.login.User.newBean()
-               user.createtime = now
-               db.login.Users.insert(userid, user)
-               log.info("create account:{} userid:{}", m.account, userid)
-           } else {
-               userid = account.userid
+               log.info("create account:{}", m.account)
            }
            Transaction.syncExecuteWhileCommit({
-               GateClient.getIns().auth(m.session, m.account, userid)
+               GateClient.getIns().auth(m.session, m.account)
            })
            return true
        }

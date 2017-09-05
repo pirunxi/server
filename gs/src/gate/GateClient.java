@@ -101,15 +101,17 @@ public class GateClient extends perfect.io.Client<Session> {
 
     private void dispatch(Message m, ClientSession session) {
         int mid = m.getTypeId();
-        if(session.getUserid() == 0 && !_Refs_.gs_client_not_auth.containsKey(mid)) {
+        String account = session.getAccount();
+        if(account == null && !_Refs_.gs_client_not_auth.containsKey(mid)) {
             log.debug("session sid:{} not auth. can't send msg:{}", session.getSid(), m);
             return;
         }
-        if(session.getRoleid() == 0 && !_Refs_.gs_client_not_role.containsKey(mid)) {
-            log.debug("session sid:{} userid:{} not role login. can't send msg:{}", session.getSid(), session.getUserid(), m);
+        long roleid = session.getRoleid();
+        if(roleid == 0 && !_Refs_.gs_client_not_role.containsKey(mid)) {
+            log.debug("session sid:{} account:{} not role login. can't send msg:{}", session.getSid(), account, m);
             return;
         }
-        log.debug("GateClient.dispatch sid:{} userid:{} roleid:{} msg:{}", session.getSid(), session.getUserid(), session.getRoleid(), m);
+        log.debug("GateClient.dispatch sid:{} account:{} roleid:{} msg:{}", session.getSid(), account, roleid, m);
         m.setContext(session);
 
         MsgProcessor processor = processors.get(m.getClass());
@@ -120,17 +122,17 @@ public class GateClient extends perfect.io.Client<Session> {
         }
     }
 
-    public void auth(ClientSession session, String account, long userid) {
-        if(session.getUserid() != 0) return;
-        session.setUserid(userid);
+    public void auth(ClientSession session, String account) {
+        if(session.getAccount() != null) return;
+        session.setAccount(account);
         session.setRoleid(0);
 
-        session.send(new SAuth(account, userid));
-        log.info("GateClient.auth sid:{} userid:{}", session.getSid(), userid);
+        session.send(new SAuth(account));
+        log.info("GateClient.auth sid:{} account:{}", session.getSid(), account);
     }
 
     public void login(ClientSession session, long roleid) {
         session.setRoleid(roleid);
-        log.info("GateClient.login sid:{} userid:{} roleid:{}", session.getSid(), session.getUserid(), session.getRoleid());
+        log.info("GateClient.login sid:{} account:{} roleid:{}", session.getSid(), session.getAccount(), session.getRoleid());
     }
 }

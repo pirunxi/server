@@ -6,7 +6,6 @@
 			</msg>
 			<msg name="SAuth">
 				<field name="account" type="string"/>
-				<field name="userid" type="long"/>
 			</msg>
 		</module>
 		

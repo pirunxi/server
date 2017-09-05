@@ -1,15 +1,17 @@
 package game.login
 
-import common.IHandler
+import annotations.Handler
+import common.*
 import common.IHandler.log
-import common.UProcedure
 import gate.GateClient
 import msg.gs.login.*
 import perfect.db.Database
+import perfect.txn.Transaction
 
 /**
  * Created by HuangQiang on 2017/6/5.
  */
+@Handler
 object Handler : IHandler {
     override fun bind() {
         CGetRoleList.handler = CGetRoleList.Handler { PCGetRoleList(it).execute() }
@@ -17,10 +19,10 @@ object Handler : IHandler {
         CRoleLogin.handler = CRoleLogin.Handler { PCRoleLogin(it).execute() }
     }
 
-    class PCGetRoleList(m: CGetRoleList) : UProcedure<CGetRoleList>(m) {
+    class PCGetRoleList(val msg: CGetRoleList) : perfect.txn.Procedure() {
         override fun process(): Boolean {
             val re = SGetRoleList()
-            val user = db.login.Users.get(userid)
+            val user = db.auth.Accounts.get(msg.getUserid())
             for (roleid in user.roleids) {
                 val role = db.login.Roles.get(roleid)
                 val ri = RoleInfo()
@@ -30,26 +32,25 @@ object Handler : IHandler {
                 ri.profession = role.profession
                 re.roles.add(ri)
             }
-            response(re)
+            msg.response(re)
             return true
         }
     }
 
 
-    class PCCreateRole(m: CCreateRole) : UProcedure<CCreateRole>(m) {
+    class PCCreateRole(val msg: CCreateRole) : perfect.txn.Procedure() {
         override fun process(): Boolean {
-            val m = message
-            val existRoleid = db.login.Rolenames2id.get(m.name)
+            val existRoleid = db.login.Rolenames2id.get(msg.name)
             if (existRoleid != null) return false
-
-            val user = db.login.Users.get(userid)
+            val userid = msg.getUserid()
+            val user = db.auth.Accounts.get(userid)
             val roleids = user.roleids
             val newRoleid = Database.getIns().nextid(db.login.Roles.getTable())
             val role = db.login.Role.newBean()
 
-            role.gender = m.gender
-            role.name = m.name
-            role.profession = m.profession
+            role.gender = msg.gender
+            role.name = msg.name
+            role.profession = msg.profession
             role.createtime = System.currentTimeMillis()
             db.login.Roles.insert(newRoleid, role)
             roleids.add(newRoleid)
@@ -57,27 +58,28 @@ object Handler : IHandler {
 
             val ri = RoleInfo()
             ri.roleid = newRoleid
-            ri.name = m.name
-            ri.gender = m.gender
-            ri.profession = m.profession
-            response(SCreateRole(ri))
+            ri.name = msg.name
+            ri.gender = msg.gender
+            ri.profession = msg.profession
+            msg.response(SCreateRole(ri))
             return true
         }
     }
 
 
-    class PCRoleLogin(p: CRoleLogin) : UProcedure<CRoleLogin>(p) {
+    class PCRoleLogin(val msg: CRoleLogin) : perfect.txn.Procedure() {
         override fun process(): Boolean {
-            val roleid = message.roleid
-            val user = db.login.Users.get(userid)
+            val roleid = msg.roleid
+            val userid = msg.getUserid()
+            val user = db.auth.Accounts.get(userid)
             if (!user.roleids.contains(roleid))
-                return error("not user's role")
-            val role = db.login.Roles.get(roleid) ?: return error("roleid not exist")
+                return msg.err("not user's role")
+            val role = db.login.Roles.get(roleid) ?: return msg.err("roleid not exist")
             game.event.Login(roleid).trigger()
-            syncExecuteWhileCommit({
-                GateClient.getIns().login(session, roleid)
-                directlySend(SRoleLogin(roleid))
-            })
+            Transaction.syncExecuteWhileCommit{
+                GateClient.getIns().login(msg.session, roleid)
+                msg.responseDirecly(SRoleLogin(roleid))
+            }
             return true
         }
     }
